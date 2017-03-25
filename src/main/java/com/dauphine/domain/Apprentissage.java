@@ -1,22 +1,27 @@
-package bean;
+package com.dauphine.domain;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity(name = "apprentissage")
+@Entity
+@Table(name = "apprentissage")
 @DynamicUpdate
 public class Apprentissage {
-    //TODO composite key
+
+    @ManyToOne
+    @JoinTable(name = "entreprise")
     private Entreprise entreprise;
+
+    @OneToOne
+    @JoinTable(name = "apprenti")
     private Apprenti apprenti;
+
     private MaitreApp maitreApp;
 
-    public Apprentissage() {
-        super();
-    }
+//    public Apprentissage() {
+//        super();
+//    }
 
     public Apprentissage(Entreprise entreprise, Apprenti apprenti, MaitreApp maitreApp) {
         super();
@@ -69,12 +74,21 @@ public class Apprentissage {
         this.maitreApp = maitreApp;
     }
 
-    public boolean equals(Apprentissage apprentissage) {
-        return (
-                (this.entreprise.getId() == apprentissage.getEntreprise().getId()) &&
-                        (this.apprenti.getId() == apprentissage.getApprenti().getId())
-        );
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Apprentissage that = (Apprentissage) o;
+
+        if (!getEntreprise().equals(that.getEntreprise())) return false;
+        return getApprenti().equals(that.getApprenti());
     }
 
+    @Override
+    public int hashCode() {
+        int result = getEntreprise().hashCode();
+        result = 31 * result + getApprenti().hashCode();
+        return result;
+    }
 }
