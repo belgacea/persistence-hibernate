@@ -3,26 +3,22 @@ package com.dauphine.domain;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "entreprise")
 @DynamicUpdate
-public class Entreprise {
+public class Entreprise implements Serializable {
 
-    @Id
-    @GeneratedValue
     private int id;
 
-    @Column(name = "nom", nullable = false)
     private String nom;
 
-    @Column(name = "adresse")
     private String adresse;
 
-    @OneToMany
-    private ArrayList<Apprentissage> apprentissages;
+    private List<Apprentissage> apprentissages;
 
     public Entreprise() {
         apprentissages = new ArrayList<Apprentissage>();
@@ -57,6 +53,9 @@ public class Entreprise {
         this.apprentissages.remove(apprentissage);
     }
 
+    @Id
+    @Column(name = "entreprise_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
@@ -65,6 +64,7 @@ public class Entreprise {
         this.id = id;
     }
 
+    @Column(name = "nom", nullable = false)
     public String getNom() {
         if (nom == null) {
             return "";
@@ -76,6 +76,7 @@ public class Entreprise {
         this.nom = nom;
     }
 
+    @Column(name = "adresse")
     public String getAdresse() {
         return adresse;
     }
@@ -84,12 +85,13 @@ public class Entreprise {
         this.adresse = adresse;
     }
 
+    @OneToMany(mappedBy = "entreprise")
     public List<Apprentissage> getApprentissages() {
         return apprentissages;
     }
 
     public void setApprentissages(List<Apprentissage> apprentissages) {
-        this.apprentissages = (ArrayList<Apprentissage>) apprentissages;
+        this.apprentissages = apprentissages;
     }
 
     @Override
@@ -111,6 +113,5 @@ public class Entreprise {
     public String toString() {
         return "Entreprise [id=" + id + ", nom=" + nom + ", adresse=" + adresse + "]";
     }
-
 
 }

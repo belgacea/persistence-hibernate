@@ -10,22 +10,15 @@ import java.io.Serializable;
 @DynamicUpdate
 public class Apprenti implements Serializable {
 
-    @Id
-    @GeneratedValue
 	private int id;
 
-    @Column(name = "nom", nullable = false)
 	private String nom;
 
-    @Column(name = "premom", nullable = false)
 	private String prenom;
 
-    @OneToOne
     private Apprentissage apprentissage;
 	
-//	public Apprenti() {
-//		super();
-//	}
+	public Apprenti() {}
 
 	public Apprenti(int id) {
 		super();
@@ -42,7 +35,10 @@ public class Apprenti implements Serializable {
 		this.nom = nom;
 		this.prenom = prenom;
 	}
-	
+
+	@Id
+    @Column(name = "apprenti_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return id;
 	}
@@ -51,6 +47,7 @@ public class Apprenti implements Serializable {
 		this.id = id;
 	}
 
+    @Column(name = "nom", nullable = false)
 	public String getNom() {
 		return nom;
 	}
@@ -59,6 +56,7 @@ public class Apprenti implements Serializable {
 		this.nom = name;
 	}
 
+    @Column(name = "premom", nullable = false)
 	public String getPrenom() {
 		return prenom;
 	}
@@ -67,11 +65,12 @@ public class Apprenti implements Serializable {
 		this.prenom = prenom;
 	}
 
-	public Apprentissage getEntreprise() {
+    @OneToOne//(mappedBy = "apprenti")
+	public Apprentissage getApprentissage() {
 		return apprentissage;
 	}
 
-	public void setEntreprise(Apprentissage apprentissage) {
+	public void setApprentissage(Apprentissage apprentissage) {
 		this.apprentissage = apprentissage;
 	}
 

@@ -4,14 +4,16 @@ import com.dauphine.domain.Apprentissage;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
+@Transactional
 public class ApprentissageDAO extends DAO<Apprentissage> {
 
-    @PersistenceContext
+    //@PersistenceContext
 	private EntityManager entityManager;
 
-	public ApprentissageDAO() {
-		//super(Apprentissage.class);
+	public ApprentissageDAO(EntityManager em) {
+		super(em);
 	}
 
 //	public int create(Apprentissage apprentissage) {

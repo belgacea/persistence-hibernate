@@ -3,42 +3,73 @@ package com.dauphine.domain;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "apprentissage")
 @DynamicUpdate
-public class Apprentissage {
+public class Apprentissage implements Serializable {
 
-    @ManyToOne
-    @JoinTable(name = "entreprise")
-    private Entreprise entreprise;
+    private ApprentissageId apprentissageId;
 
-    @OneToOne
-    @JoinTable(name = "apprenti")
-    private Apprenti apprenti;
+    @EmbeddedId
+    public ApprentissageId getId(){
+        return apprentissageId;
+    }
+
+    public void setId(ApprentissageId id){
+        this.apprentissageId = id;
+    }
 
     private MaitreApp maitreApp;
 
-//    public Apprentissage() {
-//        super();
-//    }
+    public Apprentissage() {}
 
     public Apprentissage(Entreprise entreprise, Apprenti apprenti, MaitreApp maitreApp) {
         super();
-        this.entreprise = entreprise;
-        this.apprenti = apprenti;
+//        this.entreprise = entreprise;
+//        this.apprenti = apprenti;
+        this.apprentissageId = new ApprentissageId(entreprise, apprenti);
         this.maitreApp = maitreApp;
     }
 
-    @Id
-    public int getApprentiId() {
-        return apprenti.getId();
+    @ManyToOne(cascade=CascadeType.ALL)
+//    @JoinColumn(name = "entreprise_id", referencedColumnName = "entreprise_id", nullable = false, insertable = false, updatable = false)
+    public Entreprise getEntreprise() {
+        return apprentissageId.getEntreprise();
     }
 
-    @Id
-    public int getEntrepriseId(){
-        return entreprise.getId();
+    public void setEntreprise(Entreprise entreprise) {
+        this.apprentissageId.setEntreprise(entreprise);
     }
+
+    @OneToOne(optional = false)
+//    @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
+    public Apprenti getApprenti() {
+        return apprentissageId.getApprenti();
+    }
+
+    public void setApprenti(Apprenti apprenti) {
+        this.apprentissageId.setApprenti(apprenti);
+    }
+
+//    @ManyToOne(cascade=CascadeType.ALL)
+//    public Entreprise getEntreprise() {
+//        return entreprise;
+//    }
+//
+//    public void setEntreprise(Entreprise entreprise) {
+//        this.entreprise = entreprise;
+//    }
+//
+//    @OneToOne(optional = false)
+//    public Apprenti getApprenti() {
+//        return apprenti;
+//    }
+//
+//    public void setApprenti(Apprenti apprenti) {
+//        this.apprenti = apprenti;
+//    }
 
     @Column(name = "nomMA")
     public String getNomMA() {
@@ -50,22 +81,15 @@ public class Apprentissage {
         return maitreApp.getPrenomMA();
     }
 
-    public Entreprise getEntreprise() {
-        return entreprise;
+    public void setNomMA(String nomMA) {
+        maitreApp.setNomMA(nomMA);
     }
 
-    public void setEntreprise(Entreprise entreprise) {
-        this.entreprise = entreprise;
+    public void setPrenomMA(String prenomMA) {
+        maitreApp.setPrenomMA(prenomMA);
     }
 
-    public Apprenti getApprenti() {
-        return apprenti;
-    }
-
-    public void setApprenti(Apprenti apprenti) {
-        this.apprenti = apprenti;
-    }
-
+    @Transient
     public MaitreApp getMaitreApp() {
         return maitreApp;
     }
@@ -74,21 +98,76 @@ public class Apprentissage {
         this.maitreApp = maitreApp;
     }
 
+    @Transient
+    public long getApprentiId() {
+        return apprentissageId.getApprenti().getId();
+    }
+
+    @Transient
+    public long getEntrepriseId(){
+        return apprentissageId.getEntreprise().getId();
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Apprentissage that = (Apprentissage) o;
-
-        if (!getEntreprise().equals(that.getEntreprise())) return false;
-        return getApprenti().equals(that.getApprenti());
+        return apprentissageId.equals(o);
     }
 
     @Override
     public int hashCode() {
-        int result = getEntreprise().hashCode();
-        result = 31 * result + getApprenti().hashCode();
-        return result;
+        return apprentissageId.hashCode();
     }
+
+    @Embeddable
+    public class ApprentissageId implements Serializable {
+
+        @JoinColumn(name = "entreprise_id", referencedColumnName = "entreprise_id", nullable = false, insertable = false, updatable = false)
+        private Entreprise entreprise;
+
+        @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
+        private Apprenti apprenti;
+
+        public ApprentissageId(){}
+
+        public ApprentissageId(Entreprise entreprise, Apprenti apprenti){
+            this.entreprise = entreprise;
+            this.apprenti = apprenti;
+        }
+
+        public Entreprise getEntreprise() {
+            return entreprise;
+        }
+
+        public void setEntreprise(Entreprise entreprise) {
+            this.entreprise = entreprise;
+        }
+
+        public Apprenti getApprenti() {
+            return apprenti;
+        }
+
+        public void setApprenti(Apprenti apprenti) {
+            this.apprenti = apprenti;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Apprentissage that = (Apprentissage) o;
+
+            if (!getEntreprise().equals(that.getEntreprise())) return false;
+            return getApprenti().equals(that.getApprenti());
+        }
+
+        @Override
+        public int hashCode() {
+            int result = getEntreprise().hashCode();
+            result = 31 * result + getApprenti().hashCode();
+            return result;
+        }
+
+    }
+
 }

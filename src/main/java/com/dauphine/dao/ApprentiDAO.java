@@ -3,15 +3,17 @@ package com.dauphine.dao;
 import com.dauphine.domain.Apprenti;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityTransaction;
+import javax.transaction.Transactional;
 
+@Transactional
 public class ApprentiDAO extends DAO<Apprenti> {
 
-	@PersistenceContext
+//	@PersistenceContext
 	private EntityManager entityManager;
 
-	public ApprentiDAO() {
-	    //super(Apprenti.class);
+	public ApprentiDAO(EntityManager em) {
+	    super(em);
 	}
 //
 //	public int create(Apprenti apprenti) {
@@ -64,8 +66,20 @@ public class ApprentiDAO extends DAO<Apprenti> {
 ////		return status;
 //	}
 
-	public Apprenti find(int id) {
-        return entityManager.find(Apprenti.class, id);
+	public Apprenti find(long id) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        Apprenti apprenti = null;
+        try {
+            transaction.begin();
+            apprenti = entityManager.find(Apprenti.class, id);
+        } catch (RuntimeException e){
+            if (transaction != null && transaction.isActive()){
+                transaction.rollback();
+            }
+        } finally {
+            if(transaction.isActive()) transaction.commit();
+        }
+        return apprenti;
 
 ////		Apprenti apprenti = new Apprenti();
 ////		try {

@@ -4,14 +4,16 @@ import com.dauphine.domain.Entreprise;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
+@Transactional
 public class EntrepriseDAO extends DAO<Entreprise> {
 
-    @PersistenceContext
+    //@PersistenceContext
     private EntityManager entityManager;
 
-    public EntrepriseDAO() {
-        //super(Entreprise.class);
+    public EntrepriseDAO(EntityManager em) {
+        super(em);
     }
 
 //    public int create(Entreprise entreprise) {

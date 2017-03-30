@@ -1,30 +1,55 @@
 package com.dauphine.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transaction;
+import javax.transaction.Transactional;
 
+@Transactional
 public abstract class DAO<T> {
 
-    //private Class<T> classe;
-	@PersistenceContext
+	//@PersistenceContext
 	private EntityManager entityManager;
 
-	public DAO(/*Class classe*/) {
-        //this.classe = classe;
+	public DAO(EntityManager em) {
+        this.entityManager = em;
     }
 
 	/**
 	 * Méthode de création
 	 */
 	public void create(T obj){
-        entityManager.persist(obj);
+        EntityTransaction transaction = entityManager.getTransaction();
+	    try {
+            transaction.begin();
+            entityManager.persist(obj);
+            entityManager.flush();
+        } catch (RuntimeException e){
+            if (transaction != null && transaction.isActive()){
+                transaction.rollback();
+            }
+        } finally {
+            if(transaction.isActive()) transaction.commit();
+        }
     }
 
 	/**
 	 * Méthode de suppression
 	 */
 	public void delete(T obj){
-        entityManager.remove(obj);
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.remove(obj);
+        } catch (RuntimeException e){
+            if (transaction != null && transaction.isActive()){
+                transaction.rollback();
+            }
+        } finally {
+            if(transaction.isActive()) transaction.commit();
+        }
     }
 
 	/**
@@ -32,7 +57,17 @@ public abstract class DAO<T> {
 	 */
 
 	public void update(T obj){
-        entityManager.merge(obj);
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.merge(obj);
+        } catch (RuntimeException e){
+            if (transaction != null && transaction.isActive()){
+                transaction.rollback();
+            }
+        } finally {
+            if(transaction.isActive()) transaction.commit();
+        }
     }
 
     /**

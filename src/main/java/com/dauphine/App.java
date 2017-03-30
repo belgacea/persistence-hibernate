@@ -9,6 +9,10 @@ import com.dauphine.domain.Entreprise;
 import com.dauphine.domain.MaitreApp;
 import org.apache.log4j.Logger;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import static java.lang.System.exit;
 
 /**
@@ -19,16 +23,20 @@ public class App {
 
     private static final Logger logger = Logger.getLogger(App.class);
 
-    private static EntrepriseDAO entrepriseDAO = new EntrepriseDAO();
-    private static ApprentiDAO apprentiDAO = new ApprentiDAO();
-    private static ApprentissageDAO apprentissageDAO = new ApprentissageDAO();
+    private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistancePostgres");
+    private static final EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+    private static final EntrepriseDAO entrepriseDAO = new EntrepriseDAO(entityManager);
+    private static final ApprentiDAO apprentiDAO = new ApprentiDAO(entityManager);
+    private static final ApprentissageDAO apprentissageDAO = new ApprentissageDAO(entityManager);
 
     public static void main(String[] args) {
-        //TODO
-        if (args.length != 3) {
+        logger.info("Start running...");
+        if (args.length != 1) {
             incorrectUsage();
         }
         int s = Integer.parseInt(args[0]);
+        logger.info("Trying the case n°" + s);
         try {
             switch (s){
                 case 1:
@@ -41,19 +49,20 @@ public class App {
                     throw new RuntimeException("Case not define");
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
-            logger.error(e.getStackTrace());
+            logger.error("Something really bad happened : ", e);
         }
 
     }
 
     private static void case1() {
         int[] id1 = init1();
+        logger.debug(id1.toString());
         tryApprenti(id1[1]);
     }
 
     private static void case2() {
         int[] id2 = init2();
+        logger.debug(id2.toString());
         tryApprenti(id2[2]);
     }
 
@@ -66,6 +75,8 @@ public class App {
         entrepriseDAO.create(bdf);
         apprentiDAO.create(belgacem);
         apprentissageDAO.create(appr1);
+
+        logger.debug("ID = "+ belgacem.getId());
 
         return new int[] {belgacem.getId(), bdf.getId()};
     }
@@ -83,19 +94,20 @@ public class App {
         return new int[] {madkour.getId(), ca.getId()};
     }
 
-    private static void tryApprenti(int id) {
-        apprentiDAO.find(id);
+    private static void tryApprenti(long id) {
+        Apprenti test = apprentiDAO.find(id);
+        logger.info(test.toString());
     }
 
-    private static void tryEntreprise(int id) {
-        //TODO
-    }
+//    private static void tryEntreprise(int id) {
+//        //TODO
+//    }
+//
+//    private static void tryApprentissage(int[] ids) {
+//        //TODO
+//    }
 
-    private static void tryApprentissage(int[] ids) {
-        //TODO
-    }
-
-    public static void incorrectUsage() {
+    private static void incorrectUsage() {
         logger.error("\nIncorrect number of arguments.\nUsage:\n "+
                 "java   \n");
         exit(1);

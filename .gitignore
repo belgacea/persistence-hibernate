@@ -35,5 +35,4 @@ fabric.properties
 *.jar
 *.war
 *.ear
-src/main/resources/
 src/test/
