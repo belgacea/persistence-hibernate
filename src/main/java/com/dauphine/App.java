@@ -63,12 +63,16 @@ public class App {
 
     private static void case1() {
         int[] id1 = init1();
-        tryApprenti(id1[1]);
+        tryApprenti(id1[0]);
+        tryEntrepriseLazy(id1[1]);
+        tryApprentissageLazy(id1);
     }
 
     private static void case2() {
         int[] id2 = init2();
-        tryApprenti(id2[1]);
+        tryApprenti(id2[0]);
+        tryEntrepriseLazy(id2[1]);
+        tryApprentissageLazy(id2);
     }
 
     private static int[] init1() {
@@ -108,11 +112,21 @@ public class App {
         logger.info(test.toString());
     }
 
-//    private static void tryEntreprise(int id) {
+    private static void tryEntrepriseLazy(int id) {
+        Entreprise test = entrepriseDAO.findLazy(id);
+        logger.info(test.toString());
+    }
+
+    private static void tryApprentissageLazy(int[] ids) {
+        Apprentissage test = apprentissageDAO.findLazy(ids[1], ids[0]);
+        logger.info(test.toString());
+    }
+
+//    private static void tryEntrepriseEager(int id) {
 //        //TODO
 //    }
 //
-//    private static void tryApprentissage(int[] ids) {
+//    private static void tryApprentissageEager(int[] ids) {
 //        //TODO
 //    }
 

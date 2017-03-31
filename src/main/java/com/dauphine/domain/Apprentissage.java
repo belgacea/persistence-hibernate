@@ -116,6 +116,14 @@ public class Apprentissage implements Serializable {
         return apprentissageId.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return "Apprentissage [" + apprentissageId.getEntreprise().toString() +
+                ", " + apprentissageId.getApprenti().toString() +
+                ", " + maitreApp.toString() +
+                ']';
+    }
+
     @Embeddable
     public static class ApprentissageId implements Serializable {
 

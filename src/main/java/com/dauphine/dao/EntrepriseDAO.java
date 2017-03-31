@@ -15,74 +15,10 @@ public class EntrepriseDAO extends DAO<Entreprise> {
         this.entityManager = em;
     }
 
-//    public int create(Entreprise entreprise) {
-//        entityManager.persist(entreprise);
-//        return 0;
-//
-////		int entrepriseId = -1;
-////		try {
-////			Statement s = this.connect.createStatement();
-////			s.executeUpdate("INSERT INTO Entreprise" + " VALUES(nextval('entreprise_entreprise_id_seq'), '"
-////							+ entreprise.getNom() + "','" + entreprise.getAdresse() + "')",
-////					Statement.RETURN_GENERATED_KEYS);
-////			ResultSet result = s.executeQuery("Select last_value FROM entreprise_entreprise_id_seq");
-////			if(result.next()){
-////				entrepriseId = result.getInt(1);
-////				entreprise.setId(entrepriseId);
-////			} else throw new SQLException("No serial created");
-////		} catch (SQLException e) {
-////			e.printStackTrace();
-////		}
-////		return entrepriseId;
-//    }
-//
-//    public int delete(Entreprise entreprise) {
-//        entityManager.remove(entreprise);
-//        return 0;
-//
-////		int status = -1;
-////		try {
-////			status = this.connect.createStatement().executeUpdate(
-////					"DELETE FROM Entreprise" + " WHERE entreprise_id = " + entreprise.getId(), Statement.SUCCESS_NO_INFO);
-////		} catch (SQLException e) {
-////			e.printStackTrace();
-////		}
-////		return status;
-//    }
-//
-//    public int update(Entreprise entreprise) {
-//        return entityManager.merge(entreprise).getId();
-//
-////		int status = -1;
-////		try {
-////			status = this.connect.createStatement()
-////					.executeUpdate(
-////							"UPDATE Entreprise SET nom='" + entreprise.getNom() + ", adresse= '"
-////									+ entreprise.getAdresse() + "' WHERE entreprise_id=" + entreprise.getId(),
-////							Statement.SUCCESS_NO_INFO);
-////		} catch (SQLException e) {
-////			e.printStackTrace();
-////		}
-////		return status;
-//    }
-//
-//    public Entreprise findLazy(int id) {
-//        //TODO
-//        return null;
-//
-////        Entreprise entreprise = new Entreprise();
-////        try {
-////            ResultSet result = this.connect
-////                    .createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-////                    .executeQuery("SELECT * FROM entreprise WHERE entreprise_id = " + id);
-////            if (result.first())
-////                entreprise = new Entreprise(id, result.getString("nom"), result.getString("adresse"));
-////        } catch (SQLException e) {
-////            e.printStackTrace();
-////        }
-////        return entreprise;
-//    }
-//
+    public Entreprise findLazy(int id) {
+        return entityManager.find(Entreprise.class, id);
+    }
+
 //    public Entreprise findEater(int id) {
 //        //TODO
 //        return null;
