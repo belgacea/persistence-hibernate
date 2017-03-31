@@ -9,10 +9,7 @@ import com.dauphine.domain.Entreprise;
 import com.dauphine.domain.MaitreApp;
 import org.apache.log4j.Logger;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 
 import static java.lang.System.exit;
 
@@ -34,13 +31,19 @@ public class App {
 
     public static void main(String[] args) {
         logger.info("Start running...");
-        if (args.length != 1) {
+        if (args.length <= 0) {
             incorrectUsage();
         }
+//        if (args.length == 2 && args[1].equals("clean")) {
+//            logger.debug("Cleaning database.");
+//            dropDatabase();
+//        }
         int s = Integer.parseInt(args[0]);
         logger.info("Trying the case n°" + s);
         try {
             switch (s){
+                case 0:
+                    break;
                 case 1:
                     case1();
                     break;
@@ -52,19 +55,19 @@ public class App {
             }
         } catch (Exception e) {
             logger.error("Something really bad happened : ", e);
+        } finally {
+            logger.info("Stop running...");
+            exit(0);
         }
-        exit(0);
     }
 
     private static void case1() {
         int[] id1 = init1();
-        logger.debug(id1.toString());
         tryApprenti(id1[1]);
     }
 
     private static void case2() {
         int[] id2 = init2();
-        logger.debug(id2.toString());
         tryApprenti(id2[1]);
     }
 
@@ -117,5 +120,25 @@ public class App {
         logger.error("\nIncorrect number of arguments.\nUsage:\n "+
                 "java   \n");
         exit(1);
+    }
+
+    private static void dropDatabase() {
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            logger.info("Dropping database schema.");
+            entityManager.createNativeQuery("DROP SCHEMA public CASCADE").executeUpdate();
+            entityManager.createNativeQuery("CREATE SCHEMA public").executeUpdate();
+            entityManager.createNativeQuery("GRANT ALL ON SCHEMA public TO postgres").executeUpdate();
+        } catch (RuntimeException e){
+            if (transaction != null && transaction.isActive()){
+                transaction.rollback();
+            }
+        } finally {
+            if(transaction.isActive()) {
+                transaction.commit();
+            }
+            logger.info("Database schema dropped.");
+        }
     }
 }
