@@ -5,34 +5,26 @@
 
 # User-specific stuff:
 
-## File-based project format:
-*.iws
-
 ## Plugin-specific files:
 
 # IntelliJ
 /.idea/
-/out/
 
-# mpeltonen/sbt-idea plugin
-.idea_modules/
+# TODO JIRA plugin
+#atlassian-ide-plugin.xml
 
-# JIRA plugin
-atlassian-ide-plugin.xml
+# TODO Crashlytics plugin (for Android Studio and IntelliJ)
+#com_crashlytics_export_strings.xml
+#crashlytics.properties
+#crashlytics-build.properties
+#fabric.properties
 
-# Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
 ### Java template
 *.class
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
 
 # Package Files #
 *.jar
 *.war
 *.ear
 src/test/
+target/

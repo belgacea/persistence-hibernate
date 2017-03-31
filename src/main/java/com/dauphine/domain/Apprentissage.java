@@ -12,6 +12,16 @@ public class Apprentissage implements Serializable {
 
     private ApprentissageId apprentissageId;
 
+    private MaitreApp maitreApp;
+
+    public Apprentissage() {}
+
+    public Apprentissage(Entreprise entreprise, Apprenti apprenti, MaitreApp maitreApp) {
+        super();
+        this.apprentissageId = new ApprentissageId(entreprise, apprenti);
+        this.maitreApp = maitreApp;
+    }
+
     @EmbeddedId
     public ApprentissageId getId(){
         return apprentissageId;
@@ -19,18 +29,6 @@ public class Apprentissage implements Serializable {
 
     public void setId(ApprentissageId id){
         this.apprentissageId = id;
-    }
-
-    private MaitreApp maitreApp;
-
-    public Apprentissage() {}
-
-    public Apprentissage(Entreprise entreprise, Apprenti apprenti, MaitreApp maitreApp) {
-        super();
-//        this.entreprise = entreprise;
-//        this.apprenti = apprenti;
-        this.apprentissageId = new ApprentissageId(entreprise, apprenti);
-        this.maitreApp = maitreApp;
     }
 
     @ManyToOne(cascade=CascadeType.ALL)
@@ -125,6 +123,9 @@ public class Apprentissage implements Serializable {
 
         private Apprenti apprenti;
 
+        /**
+         * Default contructor for the composite primary key
+         */
         public ApprentissageId(){}
 
         public ApprentissageId(Entreprise entreprise, Apprenti apprenti){

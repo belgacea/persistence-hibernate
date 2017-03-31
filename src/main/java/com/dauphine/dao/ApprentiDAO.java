@@ -3,7 +3,6 @@ package com.dauphine.dao;
 import com.dauphine.domain.Apprenti;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.transaction.Transactional;
 
 @Transactional
@@ -67,19 +66,7 @@ public class ApprentiDAO extends DAO<Apprenti> {
 //	}
 
 	public Apprenti find(int id) {
-//        EntityTransaction transaction = entityManager.getTransaction();
-//        Apprenti apprenti = null;
-//        try {
-//            transaction.begin();
-        Apprenti apprenti = entityManager.find(Apprenti.class, id);
-//        } catch (RuntimeException e){
-//            if (transaction != null && transaction.isActive()){
-//                transaction.rollback();
-//            }
-//        } finally {
-//            if(transaction.isActive()) transaction.commit();
-//        }
-        return apprenti;
+        return entityManager.find(Apprenti.class, id);
 
 ////		Apprenti apprenti = new Apprenti();
 ////		try {

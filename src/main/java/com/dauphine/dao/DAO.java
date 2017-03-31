@@ -1,15 +1,16 @@
 package com.dauphine.dao;
 
+import org.apache.log4j.Logger;
+
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 
 @Transactional
 public abstract class DAO<T> {
 
+    private static final Logger logger = Logger.getLogger(DAO.class);
+    private static final String RB = "ROLLBACK";
 	private EntityManager entityManager;
 
 	public DAO(EntityManager em) {
@@ -26,8 +27,10 @@ public abstract class DAO<T> {
             entityManager.persist(obj);
             entityManager.flush();
         } catch (RuntimeException e){
-            if (transaction != null && transaction.isActive()){
+	        logger.error(e);
+            if (transaction.isActive()){
                 transaction.rollback();
+                logger.info(RB);
             }
         } finally {
             if(transaction.isActive()) transaction.commit();
@@ -43,8 +46,10 @@ public abstract class DAO<T> {
             transaction.begin();
             entityManager.remove(obj);
         } catch (RuntimeException e){
-            if (transaction != null && transaction.isActive()){
+            logger.error(e);
+            if (transaction.isActive()){
                 transaction.rollback();
+                logger.info(RB);
             }
         } finally {
             if(transaction.isActive()) transaction.commit();
@@ -61,15 +66,17 @@ public abstract class DAO<T> {
             transaction.begin();
             entityManager.merge(obj);
         } catch (RuntimeException e){
-            if (transaction != null && transaction.isActive()){
+            logger.error(e);
+            if (transaction.isActive()){
                 transaction.rollback();
+                logger.info(RB);
             }
         } finally {
             if(transaction.isActive()) transaction.commit();
         }
     }
 
-    /**
+    /*
 	 * Méthode de recherche
 	 */
 	/*public T find(int id){

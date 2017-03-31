@@ -57,8 +57,8 @@ public class App {
             logger.error("Something really bad happened : ", e);
         } finally {
             logger.info("Stop running...");
-            exit(0);
         }
+        exit(0);
     }
 
     private static void case1() {
@@ -131,7 +131,8 @@ public class App {
             entityManager.createNativeQuery("CREATE SCHEMA public").executeUpdate();
             entityManager.createNativeQuery("GRANT ALL ON SCHEMA public TO postgres").executeUpdate();
         } catch (RuntimeException e){
-            if (transaction != null && transaction.isActive()){
+            logger.error(e);
+            if (transaction.isActive()){
                 transaction.rollback();
             }
         } finally {

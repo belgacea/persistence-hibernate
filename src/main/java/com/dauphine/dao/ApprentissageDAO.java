@@ -3,7 +3,6 @@ package com.dauphine.dao;
 import com.dauphine.domain.Apprentissage;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 @Transactional
