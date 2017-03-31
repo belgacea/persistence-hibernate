@@ -14,7 +14,9 @@ public class Apprentissage implements Serializable {
 
     private MaitreApp maitreApp;
 
-    public Apprentissage() {}
+    public Apprentissage() {
+        this.maitreApp = new MaitreApp();
+    }
 
     public Apprentissage(Entreprise entreprise, Apprenti apprenti, MaitreApp maitreApp) {
         super();
@@ -134,7 +136,10 @@ public class Apprentissage implements Serializable {
         /**
          * Default contructor for the composite primary key
          */
-        public ApprentissageId(){}
+        public ApprentissageId(){
+            this.entreprise = new Entreprise();
+            this.apprenti = new Apprenti();
+        }
 
         public ApprentissageId(Entreprise entreprise, Apprenti apprenti){
             this.entreprise = entreprise;

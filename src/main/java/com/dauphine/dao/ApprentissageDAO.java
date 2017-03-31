@@ -6,6 +6,7 @@ import com.dauphine.domain.Entreprise;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 public class ApprentissageDAO extends DAO<Apprentissage> {
@@ -16,6 +17,10 @@ public class ApprentissageDAO extends DAO<Apprentissage> {
 		super(em);
 		this.entityManager = em;
 	}
+
+    public List<Apprentissage> findAll() {
+        return entityManager.createQuery("Select ap From Apprentissage ap").getResultList();
+    }
 
 	public Apprentissage findLazy(int entreprise_id, int apprentis_id) {
 	    ApprentiDAO apprentiDAO = new ApprentiDAO(entityManager);

@@ -11,6 +11,9 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
+import java.util.Iterator;
+import java.util.List;
+
 import static java.lang.System.exit;
 
 /**
@@ -50,6 +53,9 @@ public class App {
                 case 2:
                     case2();
                     break;
+                case 3:
+                    case3();
+                    break;
                 default:
                     throw new RuntimeException("Case not define");
             }
@@ -73,6 +79,12 @@ public class App {
         tryApprenti(id2[0]);
         tryEntrepriseLazy(id2[1]);
         tryApprentissageLazy(id2);
+    }
+
+    private static void case3(){
+        tryAllApprenti();
+        tryAllEntreprise();
+        tryAllApprentissage();
     }
 
     private static int[] init1() {
@@ -105,6 +117,27 @@ public class App {
         logger.debug("IDE = "+ ca.getId());
 
         return new int[] {madkour.getId(), ca.getId()};
+    }
+
+    private static void tryAllApprenti(){
+        List<Apprenti> apprentis = apprentiDAO.findAll();
+        for(Iterator<Apprenti> i = apprentis.iterator(); i.hasNext();) {
+            logger.debug(i.next().toString());
+        }
+    }
+
+    private static void tryAllEntreprise(){
+        List<Entreprise> entreprises = entrepriseDAO.findAll();
+        for(Iterator<Entreprise> i = entreprises.iterator(); i.hasNext();) {
+            logger.debug(i.next().toString());
+        }
+    }
+
+    private static void tryAllApprentissage(){
+        List<Apprentissage> apprentissages = apprentissageDAO.findAll();
+        for(Iterator<Apprentissage> i = apprentissages.iterator(); i.hasNext();) {
+            logger.debug(i.next().toString());
+        }
     }
 
     private static void tryApprenti(int id) {

@@ -4,6 +4,7 @@ import com.dauphine.domain.Entreprise;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 public class EntrepriseDAO extends DAO<Entreprise> {
@@ -13,6 +14,10 @@ public class EntrepriseDAO extends DAO<Entreprise> {
     public EntrepriseDAO(EntityManager em) {
         super(em);
         this.entityManager = em;
+    }
+
+    public List<Entreprise> findAll() {
+        return entityManager.createQuery("Select e From Entreprise e").getResultList();
     }
 
     public Entreprise findLazy(int id) {
