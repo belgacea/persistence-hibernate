@@ -12,7 +12,8 @@ public class ApprentiDAO extends DAO<Apprenti> {
 	private EntityManager entityManager;
 
 	public ApprentiDAO(EntityManager em) {
-	    super(em);
+		super(em);
+		this.entityManager = em;
 	}
 //
 //	public int create(Apprenti apprenti) {
@@ -65,19 +66,19 @@ public class ApprentiDAO extends DAO<Apprenti> {
 ////		return status;
 //	}
 
-	public Apprenti find(long id) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        Apprenti apprenti = null;
-        try {
-            transaction.begin();
-            apprenti = entityManager.find(Apprenti.class, id);
-        } catch (RuntimeException e){
-            if (transaction != null && transaction.isActive()){
-                transaction.rollback();
-            }
-        } finally {
-            if(transaction.isActive()) transaction.commit();
-        }
+	public Apprenti find(int id) {
+//        EntityTransaction transaction = entityManager.getTransaction();
+//        Apprenti apprenti = null;
+//        try {
+//            transaction.begin();
+        Apprenti apprenti = entityManager.find(Apprenti.class, id);
+//        } catch (RuntimeException e){
+//            if (transaction != null && transaction.isActive()){
+//                transaction.rollback();
+//            }
+//        } finally {
+//            if(transaction.isActive()) transaction.commit();
+//        }
         return apprenti;
 
 ////		Apprenti apprenti = new Apprenti();

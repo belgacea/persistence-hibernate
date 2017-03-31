@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceUnit;
 
 import static java.lang.System.exit;
 
@@ -23,6 +24,7 @@ public class App {
 
     private static final Logger logger = Logger.getLogger(App.class);
 
+    @PersistenceUnit
     private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PersistancePostgres");
     private static final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -51,7 +53,7 @@ public class App {
         } catch (Exception e) {
             logger.error("Something really bad happened : ", e);
         }
-
+        exit(0);
     }
 
     private static void case1() {
@@ -63,7 +65,7 @@ public class App {
     private static void case2() {
         int[] id2 = init2();
         logger.debug(id2.toString());
-        tryApprenti(id2[2]);
+        tryApprenti(id2[1]);
     }
 
     private static int[] init1() {
@@ -76,7 +78,8 @@ public class App {
         apprentiDAO.create(belgacem);
         apprentissageDAO.create(appr1);
 
-        logger.debug("ID = "+ belgacem.getId());
+        logger.debug("IDA = "+ belgacem.getId());
+        logger.debug("IDE = "+ bdf.getId());
 
         return new int[] {belgacem.getId(), bdf.getId()};
     }
@@ -91,10 +94,13 @@ public class App {
         apprentiDAO.create(madkour);
         apprentissageDAO.create(appr0);
 
+        logger.debug("IDA = "+ madkour.getId());
+        logger.debug("IDE = "+ ca.getId());
+
         return new int[] {madkour.getId(), ca.getId()};
     }
 
-    private static void tryApprenti(long id) {
+    private static void tryApprenti(int id) {
         Apprenti test = apprentiDAO.find(id);
         logger.info(test.toString());
     }

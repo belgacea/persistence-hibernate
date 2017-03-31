@@ -13,6 +13,7 @@ public class EntrepriseDAO extends DAO<Entreprise> {
 
     public EntrepriseDAO(EntityManager em) {
         super(em);
+        this.entityManager = em;
     }
 
 //    public int create(Entreprise entreprise) {

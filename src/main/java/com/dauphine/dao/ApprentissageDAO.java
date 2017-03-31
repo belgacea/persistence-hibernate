@@ -13,6 +13,7 @@ public class ApprentissageDAO extends DAO<Apprentissage> {
 
 	public ApprentissageDAO(EntityManager em) {
 		super(em);
+		this.entityManager = em;
 	}
 
 //	public int create(Apprentissage apprentissage) {
