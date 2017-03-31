@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 @Transactional
 public abstract class DAO<T> {
 
-	//@PersistenceContext
 	private EntityManager entityManager;
 
 	public DAO(EntityManager em) {

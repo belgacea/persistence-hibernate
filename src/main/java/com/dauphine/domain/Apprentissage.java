@@ -34,7 +34,7 @@ public class Apprentissage implements Serializable {
     }
 
     @ManyToOne(cascade=CascadeType.ALL)
-//    @JoinColumn(name = "entreprise_id", referencedColumnName = "entreprise_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "entreprise_id", referencedColumnName = "entreprise_id", nullable = false, insertable = false, updatable = false)
     public Entreprise getEntreprise() {
         return apprentissageId.getEntreprise();
     }
@@ -44,7 +44,7 @@ public class Apprentissage implements Serializable {
     }
 
     @OneToOne(optional = false)
-//    @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
     public Apprenti getApprenti() {
         return apprentissageId.getApprenti();
     }
@@ -99,12 +99,12 @@ public class Apprentissage implements Serializable {
     }
 
     @Transient
-    public long getApprentiId() {
+    public int getApprentiId() {
         return apprentissageId.getApprenti().getId();
     }
 
     @Transient
-    public long getEntrepriseId(){
+    public int getEntrepriseId(){
         return apprentissageId.getEntreprise().getId();
     }
 
@@ -119,12 +119,10 @@ public class Apprentissage implements Serializable {
     }
 
     @Embeddable
-    public class ApprentissageId implements Serializable {
+    public static class ApprentissageId implements Serializable {
 
-        @JoinColumn(name = "entreprise_id", referencedColumnName = "entreprise_id", nullable = false, insertable = false, updatable = false)
         private Entreprise entreprise;
 
-        @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
         private Apprenti apprenti;
 
         public ApprentissageId(){}
@@ -134,6 +132,7 @@ public class Apprentissage implements Serializable {
             this.apprenti = apprenti;
         }
 
+        @Transient
         public Entreprise getEntreprise() {
             return entreprise;
         }
@@ -142,12 +141,31 @@ public class Apprentissage implements Serializable {
             this.entreprise = entreprise;
         }
 
+        @Transient
         public Apprenti getApprenti() {
             return apprenti;
         }
 
         public void setApprenti(Apprenti apprenti) {
             this.apprenti = apprenti;
+        }
+
+        @Column(name = "entreprise_id", nullable = false, updatable = false)
+        public int getEntrepriseId(){
+            return entreprise.getId();
+        }
+
+        @Column(name = "apprenti_id", nullable = false, updatable = false)
+        public int getApprentiId() {
+            return apprenti.getId();
+        }
+
+        public void setEntrepriseId(int id) {
+            entreprise.setId(id);
+        }
+
+        public void setApprentiId(int id) {
+            apprenti.setId(id);
         }
 
         @Override

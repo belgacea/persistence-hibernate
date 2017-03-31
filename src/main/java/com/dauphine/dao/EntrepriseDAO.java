@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 @Transactional
 public class EntrepriseDAO extends DAO<Entreprise> {
 
-    //@PersistenceContext
     private EntityManager entityManager;
 
     public EntrepriseDAO(EntityManager em) {

@@ -7,7 +7,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="NewPersistenceUnit" value="e0f8b252-5367-40f5-a221-3be9fdc2d86f" />
-          <factory-entry name="PersistancePostgres" />
+          <factory-entry name="PersistancePostgres" value="e0f8b252-5367-40f5-a221-3be9fdc2d86f" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
