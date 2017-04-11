@@ -53,24 +53,6 @@ public class Apprentissage implements Serializable {
         this.apprentissageId.setApprenti(apprenti);
     }
 
-//    @ManyToOne(cascade=CascadeType.ALL)
-//    public Entreprise getEntreprise() {
-//        return entreprise;
-//    }
-//
-//    public void setEntreprise(Entreprise entreprise) {
-//        this.entreprise = entreprise;
-//    }
-//
-//    @OneToOne(optional = false)
-//    public Apprenti getApprenti() {
-//        return apprenti;
-//    }
-//
-//    public void setApprenti(Apprenti apprenti) {
-//        this.apprenti = apprenti;
-//    }
-
     @Column(name = "nomMA")
     public String getNomMA() {
         return maitreApp.getNomMA();
