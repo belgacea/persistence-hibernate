@@ -78,9 +78,7 @@ public class Apprenti implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Apprenti apprenti = (Apprenti) o;
-
         return getId() == apprenti.getId();
     }
 

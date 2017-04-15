@@ -94,13 +94,16 @@ public class Entreprise implements Serializable {
         this.apprentissages = apprentissages;
     }
 
+    @Transient
+    public long countApprentissages() {
+        return apprentissages.size();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Entreprise that = (Entreprise) o;
-
         return getId() == that.getId();
     }
 

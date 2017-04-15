@@ -3,6 +3,9 @@ package com.dauphine.dao;
 import com.dauphine.domain.Apprenti;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -24,6 +27,12 @@ public class ApprentiDAO extends DAO<Apprenti> {
         return entityManager.find(Apprenti.class, id);
 	}
 
-
+	public long countAll() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Apprenti> root = query.from(Apprenti.class);
+        query.select(cb.count(root));
+		return entityManager.createQuery(query).getSingleResult();
+	}
 
 }

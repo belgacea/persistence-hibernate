@@ -120,6 +120,7 @@ public class App {
     }
 
     private static void tryAllApprenti(){
+        logger.debug("Apprenti =" + apprentiDAO.countAll());
         List<Apprenti> apprentis = apprentiDAO.findAll();
         for(Iterator<Apprenti> i = apprentis.iterator(); i.hasNext();) {
             logger.debug(i.next().toString());
@@ -127,6 +128,7 @@ public class App {
     }
 
     private static void tryAllEntreprise(){
+        logger.debug("Entreprise =" + entrepriseDAO.countAll());
         List<Entreprise> entreprises = entrepriseDAO.findAll();
         for(Iterator<Entreprise> i = entreprises.iterator(); i.hasNext();) {
             logger.debug(i.next().toString());
@@ -134,6 +136,7 @@ public class App {
     }
 
     private static void tryAllApprentissage(){
+        logger.debug("Apprentissage =" + apprentissageDAO.countAll());
         List<Apprentissage> apprentissages = apprentissageDAO.findAll();
         for(Iterator<Apprentissage> i = apprentissages.iterator(); i.hasNext();) {
             logger.debug(i.next().toString());
@@ -148,6 +151,8 @@ public class App {
     private static void tryEntrepriseLazy(int id) {
         Entreprise test = entrepriseDAO.findLazy(id);
         logger.info(test.toString());
+        logger.info("Java = " + test.countApprentissages());
+        logger.info("API Criteria = " + apprentissageDAO.countById(test.getId()));
     }
 
     private static void tryApprentissageLazy(int[] ids) {

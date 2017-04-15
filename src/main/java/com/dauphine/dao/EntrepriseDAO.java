@@ -3,6 +3,9 @@ package com.dauphine.dao;
 import com.dauphine.domain.Entreprise;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -18,6 +21,14 @@ public class EntrepriseDAO extends DAO<Entreprise> {
 
     public List<Entreprise> findAll() {
         return entityManager.createQuery("Select e From Entreprise e").getResultList();
+    }
+
+    public long countAll() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Entreprise> root = query.from(Entreprise.class);
+        query.select(cb.count(root));
+        return entityManager.createQuery(query).getSingleResult();
     }
 
     public Entreprise findLazy(int id) {

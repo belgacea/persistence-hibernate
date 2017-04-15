@@ -5,6 +5,11 @@ import com.dauphine.domain.Apprentissage;
 import com.dauphine.domain.Entreprise;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -29,6 +34,20 @@ public class ApprentissageDAO extends DAO<Apprentissage> {
         Entreprise entreprise = entrepriseDAO.findLazy(entreprise_id);
         return entityManager.find(Apprentissage.class, new Apprentissage.ApprentissageId(entreprise, apprenti));
 	}
+
+	public long countAll() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> query = cb.createQuery(Long.class);
+		Root<Apprentissage> root = query.from(Apprentissage.class);
+		query.select(cb.count(root));
+		return entityManager.createQuery(query).getSingleResult();
+	}
+
+	public long countById(int id) {
+        TypedQuery<Long> q = entityManager.createQuery("select count(*) from Apprentissage where entreprise.id =:id", Long.class);
+        q.setParameter("id", id);
+        return q.getSingleResult();
+    }
 
 //	public Apprentissage findEater(int entreprise_id, int apprentis_id) {
 //        //TODO
