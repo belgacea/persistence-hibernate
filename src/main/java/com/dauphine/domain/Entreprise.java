@@ -85,7 +85,7 @@ public class Entreprise implements Serializable {
         this.adresse = adresse;
     }
 
-    @OneToMany(mappedBy = "entreprise")
+    @OneToMany(mappedBy = "entreprise", cascade = CascadeType.ALL)
     public List<Apprentissage> getApprentissages() {
         return apprentissages;
     }

@@ -78,12 +78,13 @@ public class App {
         Apprentissage apprentissage1 = tryApprentissageLazy(id1);
 
         Apprenti apprenti2 = tryApprenti(id2[0]);
-        Entreprise entreprise2 = tryEntrepriseLazy(id2[1]);
+        Entreprise entreprise2 = tryEntrepriseEager(id2[1]);
         Apprentissage apprentissage2 = tryApprentissageLazy(id2);
 
         Apprenti apprenti3 = tryApprenti(id3[0]);
         Apprenti apprenti4 = tryApprenti(id3[1]);
-
+        Apprenti apprenti5 = tryApprenti(id3[2]);
+        Apprentissage apprentissage3 = tryApprentissageEager(new int[] {id3[2], id2[1]});
     }
 
     private static void case2() {
@@ -106,6 +107,11 @@ public class App {
         logger.debug("Entreprise test3 = " + entreprise1.equals(apprenti3.getApprentissage().getEntreprise()));
         Apprenti apprenti4 = tryApprenti(4);
         logger.debug("Entreprise test4 = " + entreprise1.equals(apprenti4.getApprentissage().getEntreprise()));
+
+        int[] id4 = test2();
+
+        apprenti3 = tryApprenti(id4[0]);
+        apprenti4 = tryApprenti(id4[1]);
     }
 
     private static void case3(){
@@ -150,7 +156,7 @@ public class App {
 
     private static int[] test1() {
         Entreprise bdf = entrepriseDAO.findLazy(1);
-        Apprenti jean = new Apprenti("D'Armery", "Jean");
+        Apprenti jean = new Apprenti("Darmery", "Jean");
         MaitreApp emma = new MaitreApp("Carena", "Emma");
         Apprentissage appr1 = new Apprentissage(bdf, jean, emma);
 
@@ -163,6 +169,31 @@ public class App {
 
         apprentiDAO.create(john);
         apprentissageDAO.create(appr2);
+
+        Entreprise ca = entrepriseDAO.findEager(2);
+        Apprenti anna = new Apprenti("Liz", "Anna");
+        Apprentissage appr3 = new Apprentissage(ca, anna, emma);
+
+        apprentiDAO.create(anna);
+        apprentissageDAO.create(appr3);
+
+//        logger.debug("IDA = "+ jean.getId());
+//        logger.debug("IDE = "+ bdf.getId());
+
+        return new int[] {jean.getId(), john.getId(), anna.getId()};
+    }
+
+    private static int[] test2() {
+        Apprenti jean = apprentiDAO.find(3);
+        jean.setNom("D'Armery");
+
+        apprentiDAO.update(jean);
+
+        Apprenti john = apprentiDAO.find(4);
+
+        logger.debug("Try DELETE");
+        apprentiDAO.delete(john);
+        logger.debug("End DELETE");
 
 //        logger.debug("IDA = "+ jean.getId());
 //        logger.debug("IDE = "+ bdf.getId());
@@ -207,7 +238,7 @@ public class App {
         Entreprise test = entrepriseDAO.findLazy(id);
         logger.debug(test.toString());
         logger.info("[Count Apprentissage] Java = " + test.countApprentissages());
-        logger.info("[Count Apprentissage] API Criteria = " + apprentissageDAO.countById(test.getId()));
+        logger.info("[Count Apprentissage] API Criteria = " + apprentissageDAO.countByEntrepriseId(test.getId()));
         return test;
     }
 
@@ -217,13 +248,17 @@ public class App {
         return test;
     }
 
-//    private static void tryEntrepriseEager(int id) {
-//        //TODO
-//    }
-//
-//    private static void tryApprentissageEager(int[] ids) {
-//        //TODO
-//    }
+    private static Entreprise tryEntrepriseEager(int id) {
+        Entreprise test = entrepriseDAO.findEager(id);
+        logger.debug(test.toString());
+        return test;
+    }
+
+    private static Apprentissage tryApprentissageEager(int[] ids) {
+        Apprentissage test = apprentissageDAO.findEager(ids[1], ids[0]);
+        logger.debug(test.toString());
+        return test;
+    }
 
     private static void incorrectUsage() {
         logger.error("\nIncorrect number of arguments.\nUsage:\n "+

@@ -34,7 +34,7 @@ public class Apprentissage implements Serializable {
         this.apprentissageId = id;
     }
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "entreprise_id", referencedColumnName = "entreprise_id", nullable = false, insertable = false, updatable = false)
     public Entreprise getEntreprise() {
         return apprentissageId.getEntreprise();
@@ -44,7 +44,7 @@ public class Apprentissage implements Serializable {
         this.apprentissageId.setEntreprise(entreprise);
     }
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
     public Apprenti getApprenti() {
         return apprentissageId.getApprenti();

@@ -1,18 +1,23 @@
 package com.dauphine.dao;
 
+import com.dauphine.domain.Apprenti;
+import com.dauphine.domain.Apprentissage;
 import com.dauphine.domain.Entreprise;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
 public class EntrepriseDAO extends DAO<Entreprise> {
 
-    private EntityManager entityManager;
+    private static final Logger logger = Logger.getLogger(DAO.class);
 
     public EntrepriseDAO(EntityManager em) {
         super(em);
@@ -35,38 +40,36 @@ public class EntrepriseDAO extends DAO<Entreprise> {
         return entityManager.find(Entreprise.class, id);
     }
 
-//    public Entreprise findEater(int id) {
-//        //TODO
-//        return null;
-//
-////        Entreprise entreprise = new Entreprise();
-////        try {
-////
-////            //On aura: nom, adresse de l'entreprise
-////            ResultSet result = this.connect
-////                    .createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-////                    .executeQuery("SELECT * FROM entreprise WHERE entreprise_id = " + id);
-////
-////
-////            if (result.first()) {
-////                entreprise = new Entreprise(id, result.getString("nom"), result.getString("adresse"));
-////
-////                //On aura: la liste des apprentissage qui sont dans l'entreprise id
-////                ResultSet result1 = this.connect
-////                        .createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-////                        .executeQuery("SELECT * FROM apprentissage WHERE entreprise_id = " + id);
-////
-////                while (result1.next()) {
-////                    int apprenti_id = result.getInt(1);
-////                    ApprentissageDAO apprentissageDAO = new ApprentissageDAO(this.connect);
-////                    apprentissageDAO.findEater(id, apprenti_id);
-////                }
-////            }
-////
-////        } catch (SQLException e) {
-////            e.printStackTrace();
-////        }
-////        return entreprise;
-//    }
+    public Entreprise findEager(int id) {
+        Entreprise entreprise = entityManager.find(Entreprise.class, id);
+        ArrayList<Apprentissage> apprentissages = new ArrayList<Apprentissage>();
+        for(Apprentissage apprentissage : entreprise.getApprentissages()){
+            Apprenti apprenti = apprentissage.getApprenti();
+            apprentissages.add(entityManager.find(Apprentissage.class, new Apprentissage.ApprentissageId(entreprise, apprenti)));
+        }
+        entreprise.setApprentissages(apprentissages);
+        return entreprise;
+    }
+
+    public void delete(Entreprise entreprise) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        ApprentissageDAO apprentissageDAO = new ApprentissageDAO(entityManager);
+        List<Apprentissage> apprentissages = apprentissageDAO.findByEntrepriseId(entreprise.getId());
+        try {
+            transaction.begin();
+            for (Apprentissage apprentissage : apprentissages) {
+                entityManager.remove(apprentissage);
+            }
+            entityManager.remove(entreprise);
+        } catch (RuntimeException e){
+            logger.error(e);
+            if (transaction.isActive()){
+                transaction.rollback();
+                logger.info(RB);
+            }
+        } finally {
+            if(transaction.isActive()) transaction.commit();
+        }
+    }
 
 }

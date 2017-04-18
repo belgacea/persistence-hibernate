@@ -10,8 +10,8 @@ import javax.transaction.Transactional;
 public abstract class DAO<T> {
 
     private static final Logger logger = Logger.getLogger(DAO.class);
-    private static final String RB = "ROLLBACK";
-	private EntityManager entityManager;
+    protected static final String RB = "ROLLBACK";
+	protected EntityManager entityManager;
 
 	public DAO(EntityManager em) {
         this.entityManager = em;
@@ -20,6 +20,7 @@ public abstract class DAO<T> {
 	/**
 	 * Méthode de création
 	 */
+
 	public void create(T obj){
         EntityTransaction transaction = entityManager.getTransaction();
 	    try {
