@@ -44,7 +44,7 @@ public class Apprentissage implements Serializable {
         this.apprentissageId.setEntreprise(entreprise);
     }
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "apprenti_id", referencedColumnName = "apprenti_id", nullable = false, insertable = false, updatable = false)
     public Apprenti getApprenti() {
         return apprentissageId.getApprenti();

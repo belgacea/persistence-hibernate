@@ -10,7 +10,6 @@ import com.dauphine.domain.MaitreApp;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
-
 import java.util.Iterator;
 import java.util.List;
 
@@ -111,7 +110,7 @@ public class App {
         int[] id4 = test2();
 
         apprenti3 = tryApprenti(id4[0]);
-        apprenti4 = tryApprenti(id4[1]);
+        apprenti4 = tryApprenti(id4[1]); //This must failed
     }
 
     private static void case3(){
@@ -128,12 +127,9 @@ public class App {
         MaitreApp manouvrier = new MaitreApp("Manouvrier", "Maude");
         Apprentissage appr1 = new Apprentissage(bdf, belgacem, manouvrier);
 
-        entrepriseDAO.create(bdf);
         apprentiDAO.create(belgacem);
+        entrepriseDAO.create(bdf);
         apprentissageDAO.create(appr1);
-
-//        logger.debug("IDA = "+ belgacem.getId());
-//        logger.debug("IDE = "+ bdf.getId());
 
         return new int[] {belgacem.getId(), bdf.getId()};
     }
@@ -144,12 +140,9 @@ public class App {
         MaitreApp mahjoub = new MaitreApp("Mahjoub", "Ridha");
         Apprentissage appr0 = new Apprentissage(ca, madkour, mahjoub);
 
-        entrepriseDAO.create(ca);
         apprentiDAO.create(madkour);
+        entrepriseDAO.create(ca);
         apprentissageDAO.create(appr0);
-
-//        logger.debug("IDA = "+ madkour.getId());
-//        logger.debug("IDE = "+ ca.getId());
 
         return new int[] {madkour.getId(), ca.getId()};
     }
@@ -177,9 +170,6 @@ public class App {
         apprentiDAO.create(anna);
         apprentissageDAO.create(appr3);
 
-//        logger.debug("IDA = "+ jean.getId());
-//        logger.debug("IDE = "+ bdf.getId());
-
         return new int[] {jean.getId(), john.getId(), anna.getId()};
     }
 
@@ -191,12 +181,7 @@ public class App {
 
         Apprenti john = apprentiDAO.find(4);
 
-        logger.debug("Try DELETE");
         apprentiDAO.delete(john);
-        logger.debug("End DELETE");
-
-//        logger.debug("IDA = "+ jean.getId());
-//        logger.debug("IDE = "+ bdf.getId());
 
         return new int[] {jean.getId(), john.getId()};
     }

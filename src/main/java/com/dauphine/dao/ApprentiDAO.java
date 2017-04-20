@@ -1,7 +1,6 @@
 package com.dauphine.dao;
 
 import com.dauphine.domain.Apprenti;
-import com.dauphine.domain.Apprentissage;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -10,7 +9,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -41,11 +39,11 @@ public class ApprentiDAO extends DAO<Apprenti> {
 
     public void delete(Apprenti apprenti) {
         EntityTransaction transaction = entityManager.getTransaction();
-        ApprentissageDAO apprentissageDAO = new ApprentissageDAO(entityManager);
-        Apprentissage apprentissage = apprentissageDAO.findByApprentiId(apprenti.getId());
         try {
             transaction.begin();
-            entityManager.remove(apprentissage);
+            logger.debug("Apprentissage : " + apprenti.getApprentissage().toString());
+            entityManager.remove(apprenti.getApprentissage());
+            logger.debug("Apprenti : " + apprenti.toString());
             entityManager.remove(apprenti);
         } catch (RuntimeException e){
             logger.error(e);

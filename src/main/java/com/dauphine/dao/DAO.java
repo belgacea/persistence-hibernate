@@ -77,12 +77,4 @@ public abstract class DAO<T> {
         }
     }
 
-    /*
-	 * Méthode de recherche
-	 */
-	/*public T find(int id){
-        return entityManager.find(classe, id);
-    }*/
-
-
 }

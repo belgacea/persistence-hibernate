@@ -65,7 +65,7 @@ public class Apprenti implements Serializable {
 		this.prenom = prenom;
 	}
 
-    @OneToOne(mappedBy = "apprenti", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "apprenti", cascade = CascadeType.ALL)
 	public Apprentissage getApprentissage() {
 		return apprentissage;
 	}

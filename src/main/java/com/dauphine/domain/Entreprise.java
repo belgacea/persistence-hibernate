@@ -91,7 +91,8 @@ public class Entreprise implements Serializable {
     }
 
     public void setApprentissages(List<Apprentissage> apprentissages) {
-        this.apprentissages = apprentissages;
+        this.apprentissages.clear();
+        if(apprentissages != null) this.apprentissages.addAll(apprentissages);
     }
 
     @Transient
