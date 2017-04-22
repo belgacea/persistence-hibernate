@@ -14,8 +14,6 @@ import java.util.List;
 @Transactional
 public class ApprentiDAO extends DAO<Apprenti> {
 
-    private static final Logger logger = Logger.getLogger(DAO.class);
-
 	public ApprentiDAO(EntityManager em) {
 		super(em);
 		this.entityManager = em;
@@ -36,24 +34,5 @@ public class ApprentiDAO extends DAO<Apprenti> {
         query.select(cb.count(root));
 		return entityManager.createQuery(query).getSingleResult();
 	}
-
-    public void delete(Apprenti apprenti) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            transaction.begin();
-            logger.debug("Apprentissage : " + apprenti.getApprentissage().toString());
-            entityManager.remove(apprenti.getApprentissage());
-            logger.debug("Apprenti : " + apprenti.toString());
-            entityManager.remove(apprenti);
-        } catch (RuntimeException e){
-            logger.error(e);
-            if (transaction.isActive()){
-                transaction.rollback();
-                logger.info(RB);
-            }
-        } finally {
-            if(transaction.isActive()) transaction.commit();
-        }
-    }
 
 }

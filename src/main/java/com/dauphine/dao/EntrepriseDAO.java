@@ -17,8 +17,6 @@ import java.util.List;
 @Transactional
 public class EntrepriseDAO extends DAO<Entreprise> {
 
-    private static final Logger logger = Logger.getLogger(DAO.class);
-
     public EntrepriseDAO(EntityManager em) {
         super(em);
         this.entityManager = em;
@@ -49,27 +47,6 @@ public class EntrepriseDAO extends DAO<Entreprise> {
         }
         entreprise.setApprentissages(apprentissages);
         return entreprise;
-    }
-
-    public void delete(Entreprise entreprise) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        ApprentissageDAO apprentissageDAO = new ApprentissageDAO(entityManager);
-        List<Apprentissage> apprentissages = apprentissageDAO.findByEntrepriseId(entreprise.getId());
-        try {
-            transaction.begin();
-            for (Apprentissage apprentissage : apprentissages) {
-                entityManager.remove(apprentissage);
-            }
-            entityManager.remove(entreprise);
-        } catch (RuntimeException e){
-            logger.error(e);
-            if (transaction.isActive()){
-                transaction.rollback();
-                logger.info(RB);
-            }
-        } finally {
-            if(transaction.isActive()) transaction.commit();
-        }
     }
 
 }

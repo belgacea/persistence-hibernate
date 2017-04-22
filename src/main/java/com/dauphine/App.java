@@ -110,7 +110,7 @@ public class App {
         int[] id4 = test2();
 
         apprenti3 = tryApprenti(id4[0]);
-        apprenti4 = tryApprenti(id4[1]); //This must failed
+        apprenti4 = tryApprenti(id4[1]); //This must fail
     }
 
     private static void case3(){
