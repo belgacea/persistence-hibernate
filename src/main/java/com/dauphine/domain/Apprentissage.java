@@ -23,6 +23,7 @@ public class Apprentissage implements Serializable {
         this.apprentissageId = new ApprentissageId(entreprise, apprenti);
         this.maitreApp = maitreApp;
         entreprise.addApprentissage(this);
+        apprenti.setApprentissage(this);
     }
 
     @EmbeddedId
@@ -168,7 +169,7 @@ public class Apprentissage implements Serializable {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (o == null || Apprentissage.class != o.getClass()) return false;
             Apprentissage that = (Apprentissage) o;
             if (!getEntreprise().equals(that.getEntreprise())) return false;
             return getApprenti().equals(that.getApprenti());

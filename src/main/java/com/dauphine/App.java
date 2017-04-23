@@ -15,10 +15,6 @@ import java.util.List;
 
 import static java.lang.System.exit;
 
-/**
- * @author belgacea
- * @date 25/03/2017
- */
 public class App {
 
     private static final Logger logger = Logger.getLogger(App.class);
@@ -122,26 +118,28 @@ public class App {
     }
 
     private static int[] init1() {
-        Entreprise bdf = new Entreprise("Banque de France", "Paris");
         Apprenti belgacem = new Apprenti("Belgacem", "Adam");
+        apprentiDAO.create(belgacem);
+
+        Entreprise bdf = new Entreprise("Banque de France", "Paris");
+        entrepriseDAO.create(bdf);
+
         MaitreApp manouvrier = new MaitreApp("Manouvrier", "Maude");
         Apprentissage appr1 = new Apprentissage(bdf, belgacem, manouvrier);
-
-        apprentiDAO.create(belgacem);
-        entrepriseDAO.create(bdf);
         apprentissageDAO.create(appr1);
 
         return new int[] {belgacem.getId(), bdf.getId()};
     }
 
     private static int[] init2() {
-        Entreprise ca = new Entreprise("Crédit agricole", "Paris");
         Apprenti madkour = new Apprenti("Madkour", "Chafiq");
+        apprentiDAO.create(madkour);
+
+        Entreprise ca = new Entreprise("Crédit agricole", "Paris");
+        entrepriseDAO.create(ca);
+
         MaitreApp mahjoub = new MaitreApp("Mahjoub", "Ridha");
         Apprentissage appr0 = new Apprentissage(ca, madkour, mahjoub);
-
-        apprentiDAO.create(madkour);
-        entrepriseDAO.create(ca);
         apprentissageDAO.create(appr0);
 
         return new int[] {madkour.getId(), ca.getId()};
@@ -150,24 +148,24 @@ public class App {
     private static int[] test1() {
         Entreprise bdf = entrepriseDAO.findLazy(1);
         Apprenti jean = new Apprenti("Darmery", "Jean");
+        apprentiDAO.create(jean);
+
         MaitreApp emma = new MaitreApp("Carena", "Emma");
         Apprentissage appr1 = new Apprentissage(bdf, jean, emma);
-
-        apprentiDAO.create(jean);
         apprentissageDAO.create(appr1);
 
         Apprenti john = new Apprenti("Doeuf", "John");
+        apprentiDAO.create(john);
+
         MaitreApp terry = new MaitreApp("Golo", "Terry");
         Apprentissage appr2 = new Apprentissage(bdf, john, terry);
-
-        apprentiDAO.create(john);
         apprentissageDAO.create(appr2);
 
         Entreprise ca = entrepriseDAO.findEager(2);
         Apprenti anna = new Apprenti("Liz", "Anna");
-        Apprentissage appr3 = new Apprentissage(ca, anna, emma);
-
         apprentiDAO.create(anna);
+
+        Apprentissage appr3 = new Apprentissage(ca, anna, emma);
         apprentissageDAO.create(appr3);
 
         return new int[] {jean.getId(), john.getId(), anna.getId()};
@@ -176,11 +174,9 @@ public class App {
     private static int[] test2() {
         Apprenti jean = apprentiDAO.find(3);
         jean.setNom("D'Armery");
-
         apprentiDAO.update(jean);
 
         Apprenti john = apprentiDAO.find(4);
-
         apprentiDAO.delete(john);
 
         return new int[] {jean.getId(), john.getId()};

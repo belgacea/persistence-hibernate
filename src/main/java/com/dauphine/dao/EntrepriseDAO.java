@@ -3,10 +3,8 @@ package com.dauphine.dao;
 import com.dauphine.domain.Apprenti;
 import com.dauphine.domain.Apprentissage;
 import com.dauphine.domain.Entreprise;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
