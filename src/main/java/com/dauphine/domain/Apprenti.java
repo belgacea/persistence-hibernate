@@ -56,7 +56,7 @@ public class Apprenti implements Serializable {
 		this.nom = name;
 	}
 
-    @Column(name = "premom", nullable = false)
+    @Column(name = "prenom", nullable = false)
 	public String getPrenom() {
 		return prenom;
 	}
